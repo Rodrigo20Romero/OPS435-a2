@@ -1,0 +1,12 @@
+time1 ---------------||-----------------------||-------------time1-------time2---------time1
+		  [23:59:59]
+
+mktime(time1) + 86400 -> next_day
+
+localtime(next_day) => Struct_time  ---> strf('%j',next_day) --> compare day2
+
+
+'87,780 seconds in total and 60,300 seconds in 14 and (27,479+200=27679) in 13')
+
+
+

@@ -1,0 +1,186 @@
++ test_data=a2_final_data
++ echo 'Test data file: a2_final_data'
+Test data file: a2_final_data
++ cat a2_final_data
+rchan    pts/9        10.40.105.99     Tue Feb 13 16:53:42 2018 - Tue Feb 13 16:57:02 2018  (00:09)    
+rchan    pts/8        10.40.105.99     Tue Feb 13 19:28:43 2018 - Tue Feb 13 20:28:31 2018  (00:00)    
+rchan    pts/2        10.40.105.99     Tue Feb 14 16:22:00 2018 - Tue Feb 14 16:45:00 2018  (00:00)    
+asmith   pts/2        10.40.105.130    Tue Feb 13 16:19:29 2018 - Tue Feb 13 16:22:00 2018  (00:00)    
+rchan    pts/4        10.40.105.99     Tue Feb 15 16:17:21 2018 - Tue Feb 15 16:30:10 2018  (00:00)    
+asmith   pts/13       10.40.105.130    Tue Feb 13 16:07:52 2018 - Tue Feb 13 16:45:52 2018  (00:00)    
+asmith   pts/11       10.40.105.130    Tue Feb 13 14:07:43 2018 - Tue Feb 13 16:07:43 2018  (00:00)
+rchan    pts/9        10.40.105.99     Tue Jun 12 16:53:42 2018 - Tue Jun 12 16:57:02 2018  (00:00)    
+rchan    pts/8        10.40.105.99     Tue Jun 12 19:28:43 2018 - Tue Jun 12 20:28:33 2018  (00:00)    
+rchan    pts/2        10.40.105.99     Tue Jun 12 10:22:00 2018 - Tue Jun 12 10:45:00 2018  (00:00)    
+asmith   pts/2        10.40.105.130    Tue Jun 12 12:19:29 2018 - Tue Jun 19 16:22:00 2018  (99:99)    
+rchan    pts/4        10.40.105.99     Tue Jun 12 20:17:20 2018 - Tue Jun 19 16:30:10 2018  (99:99)    
+asmith   pts/13       10.40.105.130    Tue Jun 12 18:07:52 2018 - Tue Jun 19 16:45:52 2018  (99:99)    
++ ./ur.py -h
+usage: ur.py [-h] [-l {user,host}] [-r RHOST] [-t {daily,weekly,monthly}]
+             [-u USER] [-v]
+             F [F ...]
+
+Usage Report based on the last command
+
+positional arguments:
+  F                     list of files to be processed
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l {user,host}, --list {user,host}
+                        generate user name or remote host IP from the given
+                        files
+  -r RHOST, --rhost RHOST
+                        usage report for the given remote host IP
+  -t {daily,weekly,monthly}, --type {daily,weekly,monthly}
+                        type of report: daily, weekly, and monthly
+  -u USER, --user USER  usage report for the given user name
+  -v, --verbose         tune on output verbosity
+
+Copyright 2019 - Heedong Yang
++ ./ur.py -l user a2_final_data
+User list for a2_final_data
+===========================
+asmith
+rchan
++ ./ur.py -l host a2_final_data
+Host list for a2_final_data
+===========================
+10.40.105.130
+10.40.105.99
++ ./ur.py -u rchan -t daily a2_final_data
+Daily Usage Report for rchan
+============================
+Date          Usage in Seconds
+2018 06 19        59410
+2018 06 18        86399
+2018 06 17        86399
+2018 06 16        86399
+2018 06 15        86399
+2018 06 14        86399
+2018 06 13        86399
+2018 06 12        18529
+2018 02 15        769
+2018 02 14        1380
+2018 02 13        3788
+Total             602270
++ ./ur.py -u rchan -t weekly a2_final_data
+Weekly Usage Report for rchan
+=============================
+Week #          Usage in Seconds
+2018 25           145809
+2018 24           450524
+2018 07           5937
+Total             602270
++ ./ur.py -r 10.40.105.99 -t daily a2_final_data
+Daily Usage Report for 10.40.105.99
+===================================
+Date          Usage in Seconds
+2018 06 19        59410
+2018 06 18        86399
+2018 06 17        86399
+2018 06 16        86399
+2018 06 15        86399
+2018 06 14        86399
+2018 06 13        86399
+2018 06 12        18529
+2018 02 15        769
+2018 02 14        1380
+2018 02 13        3788
+Total             602270
++ ./ur.py -r 10.40.105.99 -t weekly a2_final_data
+Weekly Usage Report for 10.40.105.99
+====================================
+Week #          Usage in Seconds
+2018 25           145809
+2018 24           450524
+2018 07           5937
+Total             602270
++ ./ur.py -l user a2_final_data -v
+Files to be processed:['a2_final_data']
+Type of args for files <class 'list'>
+processing usage report for the following: 
+reading login/logout record files ['a2_final_data']
+Generating list for user
+User list for a2_final_data
+===========================
+asmith
+rchan
++ ./ur.py -l host a2_final_data -v
+Files to be processed:['a2_final_data']
+Type of args for files <class 'list'>
+processing usage report for the following: 
+reading login/logout record files ['a2_final_data']
+Generating list for host
+Host list for a2_final_data
+===========================
+10.40.105.130
+10.40.105.99
++ ./ur.py -u asmith -t daily a2_final_data -v
+Files to be processed:['a2_final_data']
+Type of args for files <class 'list'>
+usage report for user: asmith
+usage report type: daily
+processing usage report for the following: 
+reading login/logout record files ['a2_final_data']
+Daily Usage Report for asmith
+=============================
+Date          Usage in Seconds
+2018 06 19        119272
+2018 06 18        172798
+2018 06 17        172798
+2018 06 16        172798
+2018 06 15        172798
+2018 06 14        172798
+2018 06 13        172798
+2018 06 12        63157
+2018 02 13        9631
+Total             1228848
++ ./ur.py -u asmith -t weekly a2_final_data -v
+Files to be processed:['a2_final_data']
+Type of args for files <class 'list'>
+usage report for user: asmith
+usage report type: weekly
+processing usage report for the following: 
+reading login/logout record files ['a2_final_data']
+Weekly Usage Report for asmith
+==============================
+Week #          Usage in Seconds
+2018 25           292070
+2018 24           927147
+2018 07           9631
+Total             1228848
++ ./ur.py -r 10.40.105.130 -t daily a2_final_data -v
+Files to be processed:['a2_final_data']
+Type of args for files <class 'list'>
+usage report for remote host: 10.40.105.130
+usage report type: daily
+processing usage report for the following: 
+reading login/logout record files ['a2_final_data']
+Daily Usage Report for 10.40.105.130
+====================================
+Date          Usage in Seconds
+2018 06 19        119272
+2018 06 18        172798
+2018 06 17        172798
+2018 06 16        172798
+2018 06 15        172798
+2018 06 14        172798
+2018 06 13        172798
+2018 06 12        63157
+2018 02 13        9631
+Total             1228848
++ ./ur.py -r 10.40.105.130 -t weekly a2_final_data -v
+Files to be processed:['a2_final_data']
+Type of args for files <class 'list'>
+usage report for remote host: 10.40.105.130
+usage report type: weekly
+processing usage report for the following: 
+reading login/logout record files ['a2_final_data']
+Weekly Usage Report for 10.40.105.130
+=====================================
+Week #          Usage in Seconds
+2018 25           292070
+2018 24           927147
+2018 07           9631
+Total             1228848
